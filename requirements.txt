@@ -1,0 +1,7 @@
+boto3==1.35.35
+joblib==1.4.2
+numpy==2.1.2
+pandas==2.2.3
+python-dotenv==1.0.1
+streamlit==1.33.0
+streamlit_nightly==1.33.1.dev20240422
