@@ -6,27 +6,24 @@ import joblib
 import os
 from dotenv import load_dotenv
 
-# Example variables - make sure these are correctly set
-bucket_name = os.getenv("AWS_BUCKET_NAME")  # or however you're retrieving this
-model_key = os.getenv("MODEL_KEY")
-model_local_path = "model.pkl"  # adjust the path as necessary
+# Load environment variables from the .env file
+load_dotenv()
+
+# Get AWS details from environment variables
+bucket_name = os.getenv('AWS_BUCKET_NAME')
+model_key = os.getenv('MODEL_KEY')
 
 def download_model_from_s3(bucket, key, download_path):
     s3 = boto3.client('s3')
     s3.download_file(bucket, key, download_path)
+    
+# Comment out the AWS code if your are not using it if you are loading the model locally
 
-# Check if the model file exists
+model_local_path = 'My_model.pkl'
+
 if not os.path.exists(model_local_path):
     st.write("Downloading the model from AWS S3...")
-    
-    # Check for None values
-    if not all([bucket_name, model_key, model_local_path]):
-        st.error("Missing parameters for S3 download. Please check your configuration.")
-    else:
-        try:
-            download_model_from_s3(bucket_name, model_key, model_local_path)
-        except Exception as e:
-            st.error(f"An error occurred while downloading the model: {e}")
+    download_model_from_s3(bucket_name, model_key, model_local_path)
 
 # Load the trained model from the local path
 ensemble_model = joblib.load(model_local_path)
